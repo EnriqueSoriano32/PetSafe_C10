@@ -17,6 +17,14 @@ import AdoptionFormModal from '@/Components/Modals/AdoptionFormModal';
 import ReporteFormModal from '@/Components/Modals/ReporteFormModal';
 import useAuth from '@/hooks/useAuth';
 
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
+import { useChatSocket } from '@/hooks/useChatSocket';
+
+const queryClient = new QueryClient()
+
 export default function Guest({ children }) {
     
     const { loginModal, registerModal, setLoginModal, setRegisterModal } = useAuth();
@@ -49,10 +57,13 @@ export default function Guest({ children }) {
                 setLoginModal(true);
             }
         }
-    }, [adopcionModal])
+    }, [adopcionModal]);
+
+    useChatSocket();
 
     return (
         <>
+        <QueryClientProvider client={queryClient}>
             <Toaster
                 position="top-center"
                 reverseOrder={false}
@@ -87,7 +98,7 @@ export default function Guest({ children }) {
                 </Link>
                 <Link href="/mascotas" className="ml-4 font-semibold text-custom-beige hover:text-gray-900 dark:text-custom-beige dark:hover:text-gray-600 focus:outline focus:outline-2 focus:rounded-sm">Mascotas</Link>
                 <a href="" className="ml-4 font-semibold text-custom-beige hover:text-gray-900 dark:text-custom-beige dark:hover:text-gray-600 focus:outline focus:outline-2 focus:rounded-sm">Organizaciones</a>
-                <a href="" className="ml-4 font-semibold text-custom-beige hover:text-gray-900 dark:text-custom-beige dark:hover:text-gray-600 focus:outline focus:outline-2 focus:rounded-sm">Contacto</a>
+                <Link href="/contactanos" className="ml-4 font-semibold text-custom-beige hover:text-gray-900 dark:text-custom-beige dark:hover:text-gray-600 focus:outline focus:outline-2 focus:rounded-sm">Contacto</Link>
                 
                 <button 
                     type="button"
@@ -271,6 +282,9 @@ export default function Guest({ children }) {
                                     <Dropdown.Link 
                                         href="/myadoptions"
                                     >Mis mascotas</Dropdown.Link>
+                                    <Dropdown.Link 
+                                        href="/chats"
+                                    >Mensajes</Dropdown.Link>
                                 </>
                             ) : (
                                 <>
@@ -293,6 +307,7 @@ export default function Guest({ children }) {
                     </Dropdown>
                 </div>
             </div>
+            </QueryClientProvider>
         </>
     );
 }

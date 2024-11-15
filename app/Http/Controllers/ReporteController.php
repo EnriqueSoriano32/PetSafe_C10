@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reporte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ReporteController extends Controller
 {
@@ -14,7 +15,9 @@ class ReporteController extends Controller
     public function index()
     {
         $reportes = Reporte::with('usuario')->get();
-        return view('reportes.index', compact('reportes'));
+        return Inertia::render("Reporte/Index", [
+            'reportes' => $reportes,
+        ]);
     }
 
     /**
@@ -35,10 +38,8 @@ class ReporteController extends Controller
         }
 
         $request->validate([
-            'tipo_mascota' => 'required|string|max:255',
             'foto_mascota' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'descripcion' => 'required|string',
-            'ubicacion' => 'required|string|max:255',
         ]);
 
         // Manejo del archivo de imagen
@@ -49,16 +50,15 @@ class ReporteController extends Controller
 
         $reporte = new Reporte([
             'user_id' => Auth::id(),
-            'tipo_mascota' => $request->tipo_mascota,
             'foto_mascota' => $imagePath ?? null,
             'descripcion' => $request->descripcion,
-            'ubicacion' => $request->ubicacion,
-            'estado' => 'en proceso',
         ]);
 
         $reporte->save();
 
-        return redirect()->route('reportes.index');
+        return [
+            "mensaje" => "Reporte registrado",
+        ];
     }
 
     /**
@@ -66,7 +66,7 @@ class ReporteController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $reporte = Reporte::find($id);
     }
 
     /**
@@ -89,17 +89,14 @@ class ReporteController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'tipo_mascota' => 'required|string|max:255',
             'foto_mascota' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'descripcion' => 'required|string',
-            'ubicacion' => 'required|string|max:255',
-            'estado' => 'required|string|in:en_proceso,cerrado',
         ]);
 
         $reporte = Reporte::findOrFail($id);
 
         if($reporte->user_id != auth()->user()->id) {
-            return redirect()->back();
+            return null;
         }
 
         // Manejo del archivo de imagen
@@ -110,15 +107,14 @@ class ReporteController extends Controller
         }
 
         $reporte->update([
-            'tipo_mascota' => $request->tipo_mascota,
             'descripcion' => $request->descripcion,
-            'ubicacion' => $request->ubicacion,
-            'estado' => $request->estado,
         ]);
 
         $reporte->save();
 
-        return redirect()->route('reportes.index');
+        return [
+            "mensaje" => "Registro actualizado",
+        ];
     }
 
     /**
@@ -128,7 +124,9 @@ class ReporteController extends Controller
     {
         $reporte = Reporte::findOrFail($id);
         $reporte->delete();
-        return redirect()->route('reportes.index');
+        return [
+            "mensaje" => "Registro eliminado",
+        ];
     }
 
     public function dashboard()

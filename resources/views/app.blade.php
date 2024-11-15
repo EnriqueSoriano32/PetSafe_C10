@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <!--<link rel="manifest" href="/manifest.json">-->
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -18,5 +19,14 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+        <script>
+            /*if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                console.log('Service Worker registrado con éxito:', registration);
+            }).catch(function(error) {
+                console.log('Error al registrar el Service Worker:', error);
+            });
+            }*/
+        </script>
     </body>
 </html>

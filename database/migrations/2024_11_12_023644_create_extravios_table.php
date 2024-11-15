@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('extravios', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->string('foto_mascota');
+            $table->text('descripcion');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

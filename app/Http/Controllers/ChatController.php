@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMessageMailJob;
 use App\Models\Chat;
 use App\Models\User;
 use Inertia\Inertia;
@@ -17,13 +18,10 @@ class ChatController extends Controller
      */
     public function index()
     {
-        $chats = Chat::obtenerChatsDeUsuario(auth()->user()->id);
-        $notificaciones = auth()->user()->unreadNotifications;
+        //$chats = Chat::obtenerChatsDeUsuario(auth()->user()->id);
+        //$notificaciones = auth()->user()->unreadNotifications;
         
-        return Inertia::render("Chats", [
-            "chats" => $chats,
-            "notificaciones" => $notificaciones,
-        ]);
+        return Inertia::render("Chats");
     }
 
     public function store(Request $request)
@@ -61,6 +59,11 @@ class ChatController extends Controller
             $user->notify(new ChatNotification([
                 'chat_id' => $chat->id,
                 'message_id' => $message->id,
+                'user' => [
+                    'photo' => $user->photo,
+                    'name' => $user->name,
+                    'mensaje' => $message->contenido,
+                ]
             ]));
 
             return [
@@ -88,10 +91,20 @@ class ChatController extends Controller
                 'contenido' => $request->contenido,
             ]);
 
-            $mascota->usuario->notify(new ChatNotification([
+            $mascota->usuario->notify((new ChatNotification([
                 'chat_id' => $nuevoChat->id,
                 'message_id' => $message->id,
-            ]));
+            ])));
+
+            SendMessageMailJob::dispatch([
+                'email' => $mascota->usuario->email,
+                'name' => $mascota->usuario->name,
+                'user' => [
+                    'photo' => $mascota->usuario->photo,
+                    'name' => $mascota->usuario->name,
+                    'mensaje' => $message->contenido,
+                ]
+            ]);
 
             return [
                 "mensaje" => "Mensaje enviado",
@@ -100,6 +113,24 @@ class ChatController extends Controller
     }
 
     public function show($id)
+    {
+        return Inertia::render("Chat", [
+            'id' => $id,
+        ]);
+    }
+
+    public function myChats()
+    {
+        $chats = Chat::obtenerChatsDeUsuario(auth()->user()->id);
+        $notificaciones = auth()->user()->unreadNotifications;
+
+        return [
+            "chats" => $chats,
+            "notificaciones" => $notificaciones,
+        ];
+    }
+
+    public function chat($id)
     {
         $chat = Chat::with([
             "mensajes:id,contenido,chat_id,user_id,created_at", 
@@ -134,16 +165,15 @@ class ChatController extends Controller
                     $notificacion->markAsRead();
                 };
 
-                return Inertia::render("Chat", [
+                return [
                     "chat" => $chat,
-                ]);
+                ];
             } else {
-                return redirect()->back();
+                return null;
             }
         }
 
-        return redirect()->back();
-
+        return null;
     }
 
     public function destroy(Chat $chat)

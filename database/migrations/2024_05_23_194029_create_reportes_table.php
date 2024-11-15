@@ -12,17 +12,14 @@ return new class extends Migration
     public function up(): void
 {
     Schema::create('reportes', function (Blueprint $table) {
-        $table->id(); // ID del reporte
-        $table->foreignId('user_id') // Usuario que envió el reporte
+        $table->id();
+        $table->foreignId('user_id')
               ->constrained()
               ->onDelete('cascade');
-        $table->string('tipo_mascota'); // Tipo de mascota (perro, gato, ave, etc.)
-        $table->string('foto_mascota'); // Foto de la mascota
-        $table->text('descripcion'); // Descripción breve de la mascota
-        $table->string('ubicacion'); // Ubicación del extravío
-        $table->string('estado')->default('en proceso'); // Estado del reporte
+        $table->string('foto_mascota');
+        $table->text('descripcion');
         $table->timestamps();
-        $table->softDeletes(); // Borrado lógico
+        $table->softDeletes();
     });
 }
 

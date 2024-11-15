@@ -20,7 +20,7 @@ const schema = z.object({
     descripcion: z.string().min(10, { message: 'La descripción debe tener al menos 10 caracteres' }).max(280, { message: 'La descripción no puede tener más de 280 caracteres' }),
 });
 
-export default function ReporteFormModal({ open, onClose }) {
+export default function ExtravioFormModal({ open, onClose }) {
 
     const { url } = usePage();
 

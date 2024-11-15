@@ -42,7 +42,10 @@ class PublicacionController extends Controller
         $imagenes = $request->file('imagenes');
         if($imagenes != null) {
             foreach($imagenes as $imagen) {
-                $url = ImageService::uploadImage($imagen, "posts");
+                $nombre = $imagen->getClientOriginalName();
+                $nombreUnico = uniqid() . '_' . $nombre;
+                $imagen->storeAs('public/mascotas', $nombreUnico, );
+                $url = '/storage/mascotas/' . $nombreUnico;
 
                 $publicacion->imagenes()->create([
                     'url' => $url,
@@ -91,7 +94,10 @@ class PublicacionController extends Controller
         $imagenes = $request->file('imagenes');
         if ($imagenes != null) {
             foreach ($imagenes as $imagen) {
-                $url = ImageService::uploadImage($imagen, "posts");
+                $nombre = $imagen->getClientOriginalName();
+                $nombreUnico = uniqid() . '_' . $nombre;
+                $imagen->storeAs('public/mascotas', $nombreUnico, );
+                $url = '/storage/mascotas/' . $nombreUnico;
 
                 $post->imagenes()->create([
                     'url' => $url,

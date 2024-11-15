@@ -12,11 +12,8 @@ class Reporte extends Model
 
     protected $fillable = [
         'user_id', 
-        'tipo_mascota', 
         'foto_mascota', 
-        'descripcion', 
-        'ubicacion', 
-        'estado'
+        'descripcion',
     ];
 
     public function usuario()

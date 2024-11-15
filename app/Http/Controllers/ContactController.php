@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendContactMailJob;
 use Illuminate\Http\Request;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Mail;
@@ -43,18 +44,20 @@ class ContactController extends Controller
 
         // Datos del correo
         $data = [
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'telefono' => $request->input('telefono'),
-            'subject' => $request->input('subject'),
-            'userMessage' => $request->input('message'), // Cambiado para evitar conflicto de nombre
+            'name' => $request->name,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'subject' => $request->subject,
+            'userMessage' => $request->message, // Cambiado para evitar conflicto de nombre
         ];
 
         // Enviar correo de confirmación al usuario
-        Mail::send('emails.contact', $data, function($message) use ($data) {
+        /*Mail::send('emails.contact', $data, function($message) use ($data) {
             $message->to($data['email'], $data['name'])
                     ->subject('Gracias por contactarnos-PetSafe');
-        });
+        });*/
+
+        SendContactMailJob::dispatch($data);
 
         return [
             "mensaje" => "Tu mensaje ha sido enviado con éxito. Intentaremos atenderte lo más pronto posible.",

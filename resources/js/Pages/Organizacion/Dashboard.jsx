@@ -30,12 +30,12 @@ const Dashboard = ({
         }}
         post={currentPost}
       />
-      {/*<div className="py-12">
+      <div className="py-12">
         <button
           className=""
           onClick={() => setPublicacionModal(true)}
         >Realizar publicación</button>
-      </div>*/}
+      </div>
       <div
         className="max-w-[1056px] mx-auto pt-6 bg-white border-t-2"
       >

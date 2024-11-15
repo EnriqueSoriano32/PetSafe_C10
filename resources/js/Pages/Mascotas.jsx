@@ -12,7 +12,7 @@ const AllPetsAvailable = ({ mascotas }) =>
             <p
                 className="text-xl font-bold text-gray-700 my-5"
             >Mascotas en adopción</p>
-                <div className="w-full h-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+                <div className="w-full h-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 pb-10">
                     {mascotas.map((mascota) => (
                         <PetCard
                             key={mascota.id}

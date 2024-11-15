@@ -22,7 +22,7 @@ const schema = z.object({
 });
 
 const Contact = () => {
-  const [mensaje, setMensaje] = useState("");
+  //const [mensaje, setMensaje] = useState("");
 
   const {
     register,
@@ -36,16 +36,22 @@ const Contact = () => {
   });
 
   const onSubmit = (data) => {
-    axios.post("/contactanos", data)
+    axios.post("/contactanos", data, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      }
+    })
       .then((response) => {
-        //toast.success(response?.data?.mensaje);
+        toast.success(response?.data?.mensaje);
         reset();
-        setMensaje(response?.data?.mensaje);
+        //setMensaje(response?.data?.mensaje);
       })
       .catch((e) => {
         //console.log(e);
+        toast.error("Ocurrió un error");
         reset();
-        setMensaje("Ocurrió un error");
+        //setMensaje("Ocurrió un error");
       });
   }
 
@@ -55,17 +61,17 @@ const Contact = () => {
         title="Contactanos"
       />
 
-      <div className="p-12 mt-10">
+      <div className="p-12 mt-10 w-full flex flex-col xl:items-center">
         <h1
-          className="text-3xl font-bold text-gray-700 my-5"
+          className="text-3xl font-bold text-gray-700 my-2"
         >
           Contactanos
         </h1>
         {
-          mensaje ? <p id='msj'>{mensaje}</p> : null
+          //mensaje ? <p id='msj'>{mensaje}</p> : null
         }
         <form 
-          className="space-y-6 py-3"
+          className="space-y-6 py-3 w-full xl:w-1/2 pb-10"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Input

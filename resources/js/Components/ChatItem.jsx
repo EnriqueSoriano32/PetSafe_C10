@@ -16,7 +16,7 @@ export default function ChatItem({ chat, notRead = false }){
 
     return (
         <div 
-            className={`flex items-center gap-2 border-b-2 py-2 cursor-pointer ${notRead ? 'bg-blue-50' : ''}`}
+            className={`flex items-center gap-2 border-b-2 p-2 cursor-pointer ${notRead ? 'bg-blue-50' : ''}`}
             onClick={onClick}
         >
             <div className="flex items-center gap-2 w-1/3">

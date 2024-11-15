@@ -1,6 +1,6 @@
 import formatoChat from '@/libs/formatoChat';
 import React from 'react';
-import ImageCarousel from './ImageCarousel';
+import Carousel from './Carousel';
 
 const PostItem = ({
     post,
@@ -34,8 +34,9 @@ const PostItem = ({
       >
         {post?.contenido}
       </div>
-      <ImageCarousel
+      <Carousel
         images={post?.imagenes}
+        type="show"
       />
     </div>
   );
