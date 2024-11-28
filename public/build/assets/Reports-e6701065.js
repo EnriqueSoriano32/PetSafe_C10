@@ -1,0 +1,1 @@
+import{j as r}from"./app-49175470.js";import{A as o}from"./AdminLayout-4c131fc8.js";import"./Dropdown-bc2a0d01.js";import"./transition-db21e553.js";import"./ResponsiveNavLink-a20d7cf6.js";import"./index-be8e88db.js";const i=()=>r.jsx("div",{children:"Reports"});i.layout=t=>r.jsx(o,{children:t});export{i as default};
