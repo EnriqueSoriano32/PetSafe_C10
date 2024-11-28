@@ -7,7 +7,8 @@ export default function Dropzone({
     removeImage,
     images = [],
     errors,
-    isDisabled = false
+    isDisabled = false,
+    maxFiles = 5
 })
 {
 
@@ -18,11 +19,10 @@ export default function Dropzone({
             'image/jpeg': ['.jpeg', '.jpg'],
             'image/png': ['.png'],
         },
-        maxFiles: 5,
+        maxFiles: maxFiles,
         maxSize: 5 * 1024 * 1024,
-        disabled: images.length < 5 ? false : true || isDisabled,
+        disabled: images.length < maxFiles ? false : true || isDisabled,
     });
-
 
     return (
         <>
@@ -45,25 +45,47 @@ export default function Dropzone({
                 }
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {images.map((image, index) => (
-                    <div key={index} className="relative">
-                        <img 
-                            src={image?.url || URL.createObjectURL(image)}
-                            alt="Uploaded Preview" 
-                            className="w-28 h-28 object-cover rounded-lg" 
-                        />
-                        <button
-                            type='button'
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                removeImage(image?.name || image?.id)
-                            }}
-                            className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white p-1 rounded-full text-xs focus:outline-none hover:bg-red-600"
-                        >
-                        X
-                        </button>
-                    </div>
-                    ))}
+                    {images?.length ?  (
+                        images.map((image, index) => (
+                            <div key={index} className="relative">
+                                <img 
+                                    src={image?.url || URL.createObjectURL(image)}
+                                    alt="Uploaded Preview" 
+                                    className="w-28 h-28 object-cover rounded-lg" 
+                                />
+                                <button
+                                    type='button'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeImage(image?.name || image?.id)
+                                    }}
+                                    className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white p-1 rounded-full text-xs focus:outline-none hover:bg-red-600"
+                                >
+                                X
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        images?.url && (
+                            <div className="relative">
+                                <img 
+                                    src={images?.url || URL.createObjectURL(images)}
+                                    alt="Uploaded Preview" 
+                                    className="w-28 h-28 object-cover rounded-lg" 
+                                />
+                                <button
+                                    type='button'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeImage(images?.name || images?.id)
+                                    }}
+                                    className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white p-1 rounded-full text-xs focus:outline-none hover:bg-red-600"
+                                >
+                                X
+                                </button>
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
             {errors && <p className="text-sm text-red-500">{errors.message}</p>}

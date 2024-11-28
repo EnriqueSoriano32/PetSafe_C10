@@ -64,11 +64,11 @@ const MyAdoptions = ({ mascotas }) => {
             adoption={currentAdoption}
         />
 
-        <div className="p-12 mt-10">
+        <div className="px-12">
             <p
                 className="text-xl font-bold text-gray-700 my-5"
             >Mis mascotas</p>
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 pb-10">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
                 {mascotas.map((mascota) => (
                     <PetCard
                         key={mascota.id}

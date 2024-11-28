@@ -17,7 +17,7 @@ import toast from 'react-hot-toast';
 const schema = z.object({
     name: z.string().min(6, { message: 'El nombre debe tener al menos 6 caracteres' }).max(255, { message: "El nombre no puede tener más de 255 caracteres" }),
     email: z.string().email({ message: 'El correo no es válido' }).max(255, { message: "El correo no puede tener más de 255 caracteres" }),
-    password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
+    password: z.string().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
 });
 
 export default function RegisterModal({
@@ -37,7 +37,7 @@ export default function RegisterModal({
     });
 
     const onRegister = (data) => {
-        axios.post('/register', data)
+        return axios.post('/register', data)
             .then((response) => {
                 reset();
                 onClose();
@@ -46,7 +46,6 @@ export default function RegisterModal({
                 toast.success("Bienvenido");
             })
             .catch((e) => {
-                console.log(e);
                 toast.error("Ocurrió un error")
             });
     };
@@ -56,7 +55,10 @@ export default function RegisterModal({
             title="Registrarse"
             show={open}
             closeable
-            onClose={onClose}
+            onClose={() => {
+                reset();
+                onClose();
+            }}
         >
             <form 
                 onSubmit={handleSubmit(onRegister)}
@@ -94,7 +96,7 @@ export default function RegisterModal({
 
                 <button 
                     type="submit"
-                    className="w-full h-12 bg-custom-gold text-white text-center font-bold rounded-md disabled:cursor-not-allowed"
+                    className="w-full h-12 bg-custom-gold text-white text-center font-bold rounded-md disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={isSubmitting}
                 >
                     Registrarse
@@ -102,6 +104,7 @@ export default function RegisterModal({
 
                 <LogInWithGoogle
                     text="Registrarse con Google"
+                    disabled={isSubmitting}
                 />
             </form>
 

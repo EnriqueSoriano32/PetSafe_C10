@@ -5,7 +5,11 @@ export const useChats = () => {
   const fetchChats = async () => {
     const url = "/mychats";
 
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
     return res.json();
   };
 
@@ -15,6 +19,7 @@ export const useChats = () => {
   } = useQuery({
     queryKey: ["chats"],
     queryFn: fetchChats,
+    refetchInterval: false,
   });
 
   return {

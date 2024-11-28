@@ -30,20 +30,18 @@ class ChatNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        /*if($this == null) {
-            if(isset($this->data['email']))
-            {
-                return ['database', 'mail', 'broadcast'];
-            }
-        }*/
+        if(isset($this->data['email']))
+        {
+            return ['broadcast','database', 'mail'];
+        };
 
-        return ['database', 'broadcast'];
+        return ['broadcast', 'database'];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    /*public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
                 ->subject("Persona interesada en adoptar tu mascota")
@@ -54,7 +52,7 @@ class ChatNotification extends Notification implements ShouldQueue
                 ->salutation('Saludos, El Equipo de PetSafe')
                 ->action('Visitar Sitio', url('/'));
         
-    }*/
+    }
 
     /**
      * Get the array representation of the notification.
@@ -76,7 +74,7 @@ class ChatNotification extends Notification implements ShouldQueue
 
         if($existeNotificacion)
         {
-            return null;
+            return [];
         }
 
         return [
@@ -91,6 +89,7 @@ class ChatNotification extends Notification implements ShouldQueue
             'chat_id' => $this->data['chat_id'],
             'message_id' => $this->data['message_id'],
             'user' => $this->data['user'],
+            'mensaje' => $this->data['mensaje'],
         ]);
     }
 

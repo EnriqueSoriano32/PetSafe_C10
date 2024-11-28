@@ -3,12 +3,52 @@ import AdminLayout from '@/Layouts/AdminLayout';
 import { Head } from '@inertiajs/react';
 import React, { useState } from 'react'
 
+import DataTable from 'react-data-table-component';
+
+const columns = [
+	{
+		name: 'Nombre',
+		selector: row => row.nombre_organizacion,
+	},
+	{
+		name: 'Teléfono',
+		selector: row => row.telefono,
+	},
+  {
+		name: 'Dirección',
+		selector: row => row.ubicacion,
+	},
+];
+
+const customStyles = {
+  rows: {
+    style: {
+      minHeight: '72px', // Altura mínima para las filas
+    },
+  },
+  headCells: {
+    style: {
+      fontSize: '16px',
+      fontWeight: 'bold',
+      backgroundColor: '#BF9F63',
+      textColor: 'white'
+    },
+  },
+  cells: {
+    style: {
+      fontSize: '14px',
+    },
+  },
+};
+
 const Orgs = ({ orgs }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCreateClick = () => {
     setIsOpen(true); // Cambia el estado al hacer clic en el botón
   };
+
+  console.log(orgs);
 
   return (
     <>
@@ -31,20 +71,14 @@ const Orgs = ({ orgs }) => {
         }
       >
         <div className="p-12">
-          {orgs?.length > 0 ? (
-            orgs?.map((item) => (
-                <div
-                    key={item?.id}
-                    className="rounded-md shadow-md bg-white p-2"
-                >
-                  <p>Nombre: {item?.nombre_organizacion}</p>
-                  <p>Teléfono: {item?.telefono}</p>
-                  <p>Nombre: {item?.ubicacion}</p>
-                </div>
-            ))
-          ) : (
-            <div>No hay registros</div>
-          )}
+          <DataTable
+            columns={columns}
+            data={orgs}
+            highlightOnHover
+            striped
+            noDataComponent={<div style={{ padding: '10px', color: 'red' }}>No hay datos disponibles</div>}
+            customStyles={customStyles}
+          />
         </div>
       </AdminLayout>
     </>

@@ -25,7 +25,7 @@ const ChatInput = ({ onSendMessage, disabled }) => {
   }, [message]);
 
   return (
-    <div className="relative">
+    <div className="relative w-full md:w-1/2">
       <textarea
         className="flex h-10 w-full resize-none rounded-md bg-background pr-14 bg-zinc-200/90 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 disabled:cursor-not-allowed"
         disabled={disabled}

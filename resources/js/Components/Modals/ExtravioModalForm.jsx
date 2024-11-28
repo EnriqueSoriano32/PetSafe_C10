@@ -17,6 +17,14 @@ import ModalForm from "../ModalForm";
 
 
 const schema = z.object({
+    foto_mascota: z
+    .instanceof(File) // Verifica que sea una instancia de File
+    .refine((file) => ["image/jpeg", "image/png", "image/jpg", "image/gif"].includes(file.type), {
+      message: "El archivo debe ser una imagen en formato jpeg, png, jpg o gif.",
+    })
+    .refine((file) => file.size <= 2048 * 1024, {
+      message: "El tamaño máximo permitido es de 2MB.",
+    }),
     descripcion: z.string().min(10, { message: 'La descripción debe tener al menos 10 caracteres' }).max(280, { message: 'La descripción no puede tener más de 280 caracteres' }),
 });
 
@@ -40,19 +48,39 @@ export default function ExtravioFormModal({ open, onClose }) {
 
         const formData = new FormData();
         
-        
+        for(key in data) {
+            const value = data[key];
+            formData.append(key, value);
+        };
+
+        try {
+            await axios.post();
+            toast.success("Reporte de extravio registrado");
+            reset();
+            onClose();
+        } catch (error) {
+            console.log(error);
+            toast.error("Ocurrió un error");
+        }
     }
 
-    const images = watch('imagenes');
+    const images = watch('foto_mascota');
 
     const secondaryAction = () => {
         reset();
         onClose();
-        console.log("hola")
     }
 
     const primaryAction = () => {
         handleSubmit(submitForm)();
+    }
+
+    const uploadImages = (file) => {
+        setValue('foto_mascota', file);
+    }
+
+    const removeImage =  (name) => {
+        reset('foto_mascota');
     }
 
     return (
@@ -66,6 +94,7 @@ export default function ExtravioFormModal({ open, onClose }) {
             secondaryAction={secondaryAction}
             primaryLabel="Enviar"
             secondaryLabel="Cancelar"
+            disabledButtons={isSubmitting}
         >
             <form
                 className="px-5"
@@ -82,11 +111,13 @@ export default function ExtravioFormModal({ open, onClose }) {
                     />
 
                     <Dropzone
-                        setImage={setValue}
+                        uploadImages={uploadImages}
+                        removeImage={removeImage}
                         images={images}
                         errors={errors["imagenes"]}
                         isDisabled={isSubmitting}
                         inputText="Presiona o arrastra imagenes de tu mascota (máximo 5 imágenes)"
+                        maxFiles={1}
                     />
                 </div>
             </form>

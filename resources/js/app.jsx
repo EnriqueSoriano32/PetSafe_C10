@@ -6,7 +6,14 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import AuthProvider from './context/AuthProvider';
 
+import {
+    QueryClient,
+    QueryClientProvider
+} from "@tanstack/react-query";
+
 const appName = import.meta.env.VITE_APP_NAME || 'PetSafe';
+
+const queryClient = new QueryClient();
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -15,9 +22,11 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <AuthProvider>
-                <App {...props} />
-            </AuthProvider>
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
+                    <App {...props} />
+                </AuthProvider>
+            </QueryClientProvider>
         );
     },
     progress: {

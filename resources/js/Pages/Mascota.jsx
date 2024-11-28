@@ -35,7 +35,7 @@ const Mascota = ({ mascota }) => {
         <>
             <Head title="Mascotas en adopción" />
             
-            <div className="px-12 mt-20 pb-20">
+            <div className="px-12">
                 <h1
                     className="text-3xl font-bold text-gray-700 my-3"
                 >{mascota.tipo.nombre}</h1>

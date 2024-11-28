@@ -59,16 +59,15 @@ class ChatController extends Controller
             $user->notify(new ChatNotification([
                 'chat_id' => $chat->id,
                 'message_id' => $message->id,
+                'mensaje' => $message,
                 'user' => [
-                    'photo' => $user->photo,
-                    'name' => $user->name,
+                    'photo' => auth()->user()->photo,
+                    'name' => auth()->user()->name,
                     'mensaje' => $message->contenido,
                 ]
             ]));
 
-            return [
-                "mensaje" => "Mensaje enviado",
-            ];
+            return response()->json($message);
 
         } else {
 
@@ -94,9 +93,16 @@ class ChatController extends Controller
             $mascota->usuario->notify((new ChatNotification([
                 'chat_id' => $nuevoChat->id,
                 'message_id' => $message->id,
+                'mensaje' => $message,
+                'email' => true,
+                'user' => [
+                    'photo' => auth()->user()->photo,
+                    'name' => auth()->user()->name,
+                    'mensaje' => $message->contenido,
+                ]
             ])));
 
-            SendMessageMailJob::dispatch([
+            /*SendMessageMailJob::dispatch([
                 'email' => $mascota->usuario->email,
                 'name' => $mascota->usuario->name,
                 'user' => [
@@ -104,11 +110,9 @@ class ChatController extends Controller
                     'name' => $mascota->usuario->name,
                     'mensaje' => $message->contenido,
                 ]
-            ]);
+            ]);*/
 
-            return [
-                "mensaje" => "Mensaje enviado",
-            ];
+            return response()->json($message);
         }
     }
 
@@ -165,9 +169,7 @@ class ChatController extends Controller
                     $notificacion->markAsRead();
                 };
 
-                return [
-                    "chat" => $chat,
-                ];
+                return response()->json($chat);
             } else {
                 return null;
             }

@@ -17,7 +17,7 @@ const Chats = () => {
       />
 
       <div
-        className="p-12 mt-10 w-full flex flex-col xl:items-center"
+        className="px-12 w-full flex flex-col xl:items-center"
       >
         <h1
           className="text-3xl font-bold text-gray-700 my-5"

@@ -61,7 +61,7 @@ const Contact = () => {
         title="Contactanos"
       />
 
-      <div className="p-12 mt-10 w-full flex flex-col xl:items-center">
+      <div className="px-12 w-full flex flex-col xl:items-center">
         <h1
           className="text-3xl font-bold text-gray-700 my-2"
         >
@@ -71,7 +71,7 @@ const Contact = () => {
           //mensaje ? <p id='msj'>{mensaje}</p> : null
         }
         <form 
-          className="space-y-6 py-3 w-full xl:w-1/2 pb-10"
+          className="space-y-6 py-3 w-full xl:w-1/2"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Input

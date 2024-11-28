@@ -107,6 +107,7 @@ const PublicacionFormModal = ({
       secondaryAction={secondaryAction}
       primaryLabel="Publicar"
       secondaryLabel="Cancelar"
+      disabledButtons={isSubmitting}
     >
       <form
         className="space-y-6 px-5 py-2"

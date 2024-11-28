@@ -11,7 +11,8 @@ export default function ModalForm({ children,
     primaryAction,
     secondaryAction,
     primaryLabel,
-    secondaryLabel
+    secondaryLabel,
+    disabledButtons = false,
   }) {
 
     const close = () => {
@@ -75,11 +76,13 @@ export default function ModalForm({ children,
                             className="p-5 flex justify-between"                        
                         >
                             <button
-                                className="py-2 px-4 text-white font-bold bg-red-600 rounded-md"
+                                className="py-2 px-4 text-white font-bold bg-red-600 rounded-md disabled:cursor-not-allowed disabled:opacity-50"
+                                disabled={disabledButtons}
                                 onClick={secondaryAction}
                             >{secondaryLabel}</button>
                             <button
-                                className="py-2 px-4 text-white font-bold bg-green-600 rounded-md"
+                                className="py-2 px-4 text-white font-bold bg-green-600 rounded-md disabled:cursor-not-allowed disabled:opacity-50"
+                                disabled={disabledButtons}
                                 onClick={primaryAction}
                             >{primaryLabel}</button>
                         </div>

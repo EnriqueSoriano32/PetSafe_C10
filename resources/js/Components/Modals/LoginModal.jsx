@@ -14,11 +14,12 @@ import axios from "axios";
 import { router } from '@inertiajs/react'
 
 import toast from 'react-hot-toast';
+import { useState } from "react";
 
 
 const schema = z.object({
     email: z.string().email({ message: 'El email no es válido' }),
-    password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
+    password: z.string().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
 });
 
 export default function LoginModal({
@@ -26,7 +27,6 @@ export default function LoginModal({
     onClose,
     action,
 }) {
-
     const {
         register,
         reset,
@@ -38,7 +38,7 @@ export default function LoginModal({
     });
 
     const onLogin = (data) => {
-        axios.post('/login', data)
+        return axios.post('/login', data)
             .then((response) => {
                 reset();
                 onClose();
@@ -50,7 +50,9 @@ export default function LoginModal({
                 }
             })
             .catch((e) => {
-                console.log(e);
+                if(e.response.status === 422) {
+                    return toast.error("Credenciales incorrectas.");
+                };
                 toast.error("Ocurrió un error");
             });
     };
@@ -60,7 +62,10 @@ export default function LoginModal({
             title="Iniciar sesión"
             show={open}
             closeable
-            onClose={onClose}
+            onClose={() => {
+                reset();
+                onClose();
+            }}
         >
             <form 
                 onSubmit={handleSubmit(onLogin)}
@@ -88,7 +93,7 @@ export default function LoginModal({
 
                 <button 
                     type="submit"
-                    className="w-full h-12 bg-custom-gold text-white text-center font-bold rounded-md disabled:cursor-not-allowed"
+                    className="w-full h-12 bg-custom-gold text-white text-center font-bold rounded-md disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={isSubmitting}
                 >
                     Iniciar sesión
@@ -96,6 +101,7 @@ export default function LoginModal({
 
                 <LogInWithGoogle
                     text="Iniciar sesión con Google"
+                    disabled={isSubmitting}
                 />
             </form>
 

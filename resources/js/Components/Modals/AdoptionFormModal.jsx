@@ -94,7 +94,8 @@ export default function AdoptionFormModal({ open, onClose }) {
                 router.reload();
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            toast.error("Ocurrión un error");
         }
     }
 
@@ -128,6 +129,7 @@ export default function AdoptionFormModal({ open, onClose }) {
             secondaryAction={secondaryAction}
             primaryLabel="Enviar"
             secondaryLabel="Cancelar"
+            disabledButtons={isSubmitting}
         >
             <form
                 className="px-5"

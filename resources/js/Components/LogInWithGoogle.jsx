@@ -3,7 +3,10 @@ function isMobile() {
   return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
 }
 
-export const LogInWithGoogle = ({ text }) => {
+export const LogInWithGoogle = ({ 
+  text,
+  disabled = false,
+}) => {
 
   const handleGoogleLogin = (e) => {
     if(isMobile()) {
@@ -24,7 +27,8 @@ export const LogInWithGoogle = ({ text }) => {
     <button
       type="button"
       onClick={handleGoogleLogin}
-      className="w-full flex flex-row text-center mt-5 h-12 font-bold border border-gray-800 bg-white rounded-md cursor-pointer"
+      disabled={disabled}
+      className="w-full flex flex-row text-center mt-5 h-12 font-bold border border-gray-800 bg-white rounded-md cursor-pointer disabled:cursor-not-allowed"
     >
       <div 
         className="w-12 h-full flex justify-center items-center bg-white rounded-md"
